@@ -1,0 +1,36 @@
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
+
+
+
+
+const char* ssid = "ssid";  
+const char* password = "psswrd";  
+bool data_state=false;
+WiFiClient client;  
+
+unsigned long Channel_alert =1412791;  
+const char * myWriteAPIKey_alert = "write_api_key";
+int count;
+
+void setup()
+    {
+    Serial.begin(11500);
+    WiFi.begin(ssid, password);
+    ThingSpeak.begin(client);   
+    }
+
+void loop()
+    {
+    if(Serial.available())
+      {
+       count=(int)Serial.read();
+       ThingSpeak.writeField(Channel_alert, 1, count, myWriteAPIKey_alert); 
+            
+      }
+   
+    }
+ 
