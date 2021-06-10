@@ -1,0 +1,40 @@
+#define DDTYPE DHT22
+#define flame 4
+#define MQ2 A0
+#define Dht_pin A2
+#include <DHT.h>
+#include <DHT_U.h>
+float temp_reading=0.0f,gas_reading=0.0f;
+int flame_flag=0;
+DHT dht(Dht_pin,DDTYPE);
+
+int count=0;
+
+void setup() 
+    {
+    Serial.begin(11500)
+    dht.begin();
+    pinMode(flame,INPUT);
+    }
+
+void loop() 
+    {
+    count=0;
+    temp_reading=dht.readTemperature();
+    flame_flag=digitalRead(flame);
+    gas_reading=analogRead(MQ2);
+    if(flame_flag==1)
+        {
+        count++;
+        }
+    if (gas_reading>400)
+        {
+        count++;
+        }
+    if(temp_reading>50)
+        {
+        count++;
+        }
+    Serial.write(count);
+    delay(15000);
+    }
